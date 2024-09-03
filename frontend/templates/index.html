@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4">Notes</h1>
+        
+        <button class="btn btn-primary mb-4" data-toggle="modal" data-target="#newNoteModal">New Note</button>
+        
+        <ul class="list-group">
+            {% for note in notes %}
+            <li class="list-group-item">
+                <h4>{{ note.title }}</h4>
+                <p>{{ note.body }}</p>
+                <div class="d-flex justify-content-between">
+                    <button class="btn btn-warning" data-toggle="modal" data-target="#editNoteModal" 
+                        data-id="{{ note.id }}" data-title="{{ note.title }}" data-body="{{ note.body }}">Edit</button>
+                    <form action="{{ url_for('delete_note', id=note.id) }}" method="POST" class="d-inline">
+                        <input type="submit" value="Delete" class="btn btn-danger">
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- New Note Modal -->
+    <div class="modal fade" id="newNoteModal" tabindex="-1" role="dialog" aria-labelledby="newNoteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="{{ url_for('new_note') }}" method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="newNoteModalLabel">New Note</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="new-title">Title:</label>
+                            <input type="text" id="new-title" name="title" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="new-body">Body:</label>
+                            <textarea id="new-body" name="body" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Note Modal -->
+    <div class="modal fade" id="editNoteModal" tabindex="-1" role="dialog" aria-labelledby="editNoteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form id="edit-note-form" method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editNoteModalLabel">Edit Note</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="edit-title">Title:</label>
+                            <input type="text" id="edit-title" name="title" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-body">Body:</label>
+                            <textarea id="edit-body" name="body" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $('#editNoteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var title = button.data('title');
+            var body = button.data('body');
+            
+            var modal = $(this);
+            modal.find('#edit-title').val(title);
+            modal.find('#edit-body').val(body);
+            var form = modal.find('#edit-note-form');
+            form.attr('action', `/notes/edit/${id}`);
+        });
+    </script>
+</body>
+</html>

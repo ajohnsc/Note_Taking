@@ -1,0 +1,29 @@
+services:
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    ports:
+      - "8080:5000"
+    environment:
+      - API_URL=http://backend:8000
+    depends_on:
+      - backend
+
+  backend:
+    container_name: backend
+    build: ./backend
+    environment:
+      - DATABASE_URL=mysql+pymysql://root:password@db/notes
+    depends_on:
+      - db
+  db:
+    container_name: db
+    image: mariadb:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
