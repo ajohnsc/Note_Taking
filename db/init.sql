@@ -1,9 +1,6 @@
-CREATE DATABASE IF NOT EXISTS notes;
-USE notes;
+-- Create notes database and add a clause that if it does not exists
 
-CREATE TABLE IF NOT EXISTS notes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    body TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+-- Use and Manage notes
+
+-- Create a notes Table if does not exists with a columns namely id that is an Integer and Auto Increment and Primary Key, title string that is not null, body string not null, created_at timestamp and it defaults to CURRENT_TIMESTAMP
+
