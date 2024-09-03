@@ -1,28 +1,15 @@
-# Use the Rocky Linux base image
-FROM rockylinux:8
+# Use the Rocky 8 Linux base image
 
-# Install dependencies
-RUN dnf install -y \
-    python39 \
-    python39-pip \
-    python39-devel \
-    gcc \
-    && dnf clean all
+# Update the container and install python39 python39-pip python39-devel gcc then clean all cache
 
-# Setup the working directory
-WORKDIR /app
+# Change the working directory as /app
 
-# Copy the requirements file to the container
-COPY requirements.txt .
+# Copy requirements.txt to the Container 
 
-# Install Python dependencies
-RUN pip3 install --upgrade pip && pip3 install --no-cache-dir -r requirements.txt
+# Update pip via pip and Install via pip with no cache with the requirements.txt files
 
-# Copy the application code to the container
-COPY . .
+# Copy the entire backend application code
 
-# Expose port 8000 for the FastAPI app to run on
-EXPOSE 8000
+# Expose FastAPI port
 
-# Run the application with Uvicorn
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Command to run the application via uvicorn main:app --host 0.0.0.0 --port 8000

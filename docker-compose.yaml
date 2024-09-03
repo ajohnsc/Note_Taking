@@ -1,29 +1,33 @@
 services:
-  frontend:
-    container_name: frontend
-    build: ./frontend
-    ports:
-      - "8080:5000"
-    environment:
-      - API_URL=http://backend:8000
-    depends_on:
-      - backend
+#
+# add a frontend service as frontend
+#   - build the ./frontend folder
+#   - use API_URL environment variable and set the variable as "http://backend:8000"
+#   - port forward from 5000 of the container to <assigned number>080 example if your assigned number is 10 then your port is 10080
+#   - this container should create this container after the creation of the backend service
+#   - name the container name as <name>-frontend example aj-frontend
+#
 
-  backend:
-    container_name: backend
-    build: ./backend
-    environment:
-      - DATABASE_URL=mysql+pymysql://root:password@db/notes
-    depends_on:
-      - db
-  db:
-    container_name: db
-    image: mariadb:latest
-    environment:
-      - MYSQL_ROOT_PASSWORD=password
-    volumes:
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - db_data:/var/lib/mysql
+
+#
+# add a backend service as backend
+#   - build the ./backend folder
+#   - use DATABASE_URL environment variable and set the variable as "mysql+pymysql://root:password@db/notes"
+#   - his container should create this container after the creation of the database service
+#   - make the container name as <name>-backend example aj-backend
+#
+
+#
+# add database service as db
+#   - use mariadb:latest image
+#   - use MYSQL_ROOT_PASSWORD environment variable and set the variable as "password"
+#   - make a db_data volume that will mount /var/lib/mysql of the container
+#   - make another volume ./db/init.sql and mount to /docker-entrypoint-initdb.d/init.sql of the container
+#   - make the container name as <name>-db example aj-db
+#
+
 
 volumes:
-  db_data:
+#
+# create db_data volume
+#

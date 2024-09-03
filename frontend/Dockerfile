@@ -1,28 +1,15 @@
-# Use the Rocky Linux base image
-FROM rockylinux:8
+# Use the Rocky 8 Linux base image
 
-# Install dependencies
-RUN dnf install -y \
-    python3 \
-    python3-pip \
-    python3-devel \
-    gcc \
-    && dnf clean all
+# Update the container and install python39 python39-pip python39-devel gcc then clean all cache
 
-# Setup the working directory
-WORKDIR /app
+# Change the working directory as /app
 
-# Copy the requirements file to the container
-COPY requirements.txt .
+# Copy requirements.txt to the Container 
 
-# Install Python dependencies
-RUN pip3 install --upgrade pip && pip3 install --no-cache-dir -r requirements.txt
+# Update pip via pip and Install via pip with no cache with the requirements.txt files
 
-# Copy the application code to the container
-COPY . .
+# Copy the entire frontend application code
 
-# Expose port 5000 for the Flask app to run on
-EXPOSE 5000
+# Expose the Flask port
 
-# Run the application with Gunicorn
-CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]
+# Command to run the Flask app via gunicorn -b 0.0.0.0:5000 app:app
